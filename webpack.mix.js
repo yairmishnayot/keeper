@@ -13,6 +13,9 @@ const mix = require('laravel-mix');
 
 mix.js('resources/js/app.js', 'public/js')
     .vue()
-    .sass('resources/sass/app.scss', 'public/css');
+    .sass('resources/sass/app.scss', 'public/css')
+    .postCss("resources/css/app.css", "public/css", [
+        require("tailwindcss"),
+    ]);
 
-mix.browserSync('http://127.0.0.1');
+mix.browserSync('http://keeper.test');
