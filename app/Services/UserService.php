@@ -9,12 +9,13 @@ class UserService
 {
     private User $user;
 
-    public function __construct($user = null)
+    public function __construct($user)
     {
         $this->user = $user;
     }
 
-    public function getCurrentUser(){
+    public function getCurrentUser(): User
+    {
         return $this->user;
     }
 }
