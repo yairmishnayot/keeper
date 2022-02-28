@@ -10,16 +10,12 @@ class UserController extends Controller
 {
     private UserService $user_service;
 
-    public function __construct()
-    {
-        $this->setUserService(Auth::user());
-    }
-
     public function setUserService($user){
         $this->user_service = new UserService($user);
     }
 
     public function getCurrentUser(){
+        $this->user_service = new UserService(Auth::user());
         return $this->user_service->getCurrentUser();
     }
 }
