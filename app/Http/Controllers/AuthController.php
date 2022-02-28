@@ -8,6 +8,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -18,7 +19,7 @@ class AuthController extends Controller
             $data['password'] = bcrypt($data['password']);
             $user = User::create($data);
 
-            $token = $user->createToken('keeperToken' . $user->id . Carbon::now())->plainTextToken;
+            $token = $user->createToken('keeperToken-' . $user->id . '-' .Carbon::now())->plainTextToken;
             $response = [
                 'user' => $user,
                 'token' => $token
@@ -39,15 +40,20 @@ class AuthController extends Controller
             ], 401);
         }
 
-        $token = $user->createToken('keeperToken' . $user->id . Carbon::now())->plainTextToken;
+        $token = $user->createToken('keeperToken-' . $user->id . '-' .Carbon::now())->plainTextToken;
 
         $response = [
             'user' => $user,
             'token' => $token
         ];
         return response()->json($response, 201);
+    }
 
-
-
+    public function logout(){
+        $user = Auth::user();
+        $user->tokens()->delete();
+        return response()->json([
+            'message' => 'Logged out successfully'
+        ]);
     }
 }
