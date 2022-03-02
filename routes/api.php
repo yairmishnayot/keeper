@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 
 //Public Routes
-Route::post('/register', [AuthController::class, 'register']);
+Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
 Route::post('/login', [AuthController::class, 'login']);
 
 //Protected Routes

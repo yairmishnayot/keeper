@@ -30,6 +30,28 @@ class AuthTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_register_user(){
+        $data = [
+            'name' => 'keeper test',
+            'email' => 'keeperTest' . Str::random(10) . '@gmail.com',
+            'password' => 'secret123',
+            'password_confirmation' => 'secret123'
+        ];
+
+        $route = route('auth.register');
+        $response = $this->post($route, $data);
+        $response->assertJsonStructure([
+            'user' => [
+                'name',
+                'email',
+                'id'
+            ],
+            'token'
+        ]);
+        $response->assertStatus(201);
+
+    }
+
     private function getRandomUser(){
         return User::inRandomOrder()->first();
     }
