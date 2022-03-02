@@ -11,7 +11,13 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function register( AuthRegisterRequest $request){
+    /**
+     * register a user
+     * @param AuthRegisterRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function register( AuthRegisterRequest $request): \Illuminate\Http\JsonResponse
+    {
         try{
             $data = $request->only('name', 'email', 'password');
             $data['password'] = bcrypt($data['password']);
@@ -29,7 +35,13 @@ class AuthController extends Controller
         }
     }
 
-    public function login(AuthLoginRequest $request){
+    /**
+     * login into user
+     * @param AuthLoginRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function login(AuthLoginRequest $request): \Illuminate\Http\JsonResponse
+    {
         $data = $request->only('email', 'password');
         $user = User::where('email', $data['email'])->first();
         if(!$user || !Hash::check($data['password'], $user->password)){
@@ -47,7 +59,12 @@ class AuthController extends Controller
         return response()->json($response, 201);
     }
 
-    public function logout(){
+    /**
+     * logout from user
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function logout(): \Illuminate\Http\JsonResponse
+    {
         $user = Auth::user();
         $user->tokens()->delete();
         return response()->json([
