@@ -3,9 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use Carbon\Carbon;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Tests\TestCase;
@@ -13,7 +10,7 @@ use Tests\TestCase;
 class AuthTest extends TestCase
 {
     /**
-     * A basic feature test example.
+     * testing that we can get the current logged user
      *
      * @return void
      */
@@ -30,6 +27,10 @@ class AuthTest extends TestCase
         $response->assertStatus(200);
     }
 
+    /**
+     * test that we can register a user
+     * @return void
+     */
     public function test_register_user(){
         $data = [
             'name' => 'keeper test',
@@ -52,10 +53,18 @@ class AuthTest extends TestCase
 
     }
 
+    /**
+     * get random user from DB
+     * @return mixed
+     */
     private function getRandomUser(){
         return User::inRandomOrder()->first();
     }
 
+    /**
+     * get a random user and then login into that user
+     * @return mixed
+     */
     private function getRandomUserAndLogin(){
         $user = $this->getRandomUser();
         Auth::login($user);
