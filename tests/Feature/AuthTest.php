@@ -20,7 +20,7 @@ class AuthTest extends TestCase
     public function test_get_current_user()
     {
         $this->getRandomUserAndLogin();
-        $route = route('auth.get_user');
+        $route = route('user.get_current');
         $response = $this->get($route);
         $response->assertJsonStructure([
             'id',

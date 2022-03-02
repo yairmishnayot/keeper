@@ -22,6 +22,6 @@ Route::post('/login', [AuthController::class, 'login']);
 
 //Protected Routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::get('/user', [UserController::class, 'getCurrentUser'])->name('auth.get_user');
+    Route::get('/user', [UserController::class, 'getCurrentUser'])->name('user.get_current');
     Route::get('/logout', [AuthController::class, 'logout']);
 });
