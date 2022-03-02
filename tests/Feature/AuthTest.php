@@ -3,9 +3,11 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class AuthTest extends TestCase
@@ -18,7 +20,8 @@ class AuthTest extends TestCase
     public function test_get_current_user()
     {
         $this->getRandomUserAndLogin();
-        $response = $this->get('/api/user');
+        $route = route('auth.get_user');
+        $response = $this->get($route);
         $response->assertJsonStructure([
             'id',
             'name',
