@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\note;
 use App\Http\Requests\StorenoteRequest;
 use App\Http\Requests\UpdatenoteRequest;
+use App\Services\NoteService;
 
 class NoteController extends Controller
 {
@@ -19,24 +20,21 @@ class NoteController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Store a newly created note.
      *
      * @param  \App\Http\Requests\StorenoteRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function store(StorenoteRequest $request)
+    public function store(StorenoteRequest $request): \Illuminate\Http\JsonResponse
     {
-        //
+        try{
+            $data = $request->only('title', 'content', 'background', 'is_background_image');
+            $note = NoteService::createNote($data);
+            return response()->json($note);
+        }
+        catch (\Exception $e){
+            return response()->json($e->getMessage(), 500);
+        }
     }
 
     /**
@@ -50,16 +48,6 @@ class NoteController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\note  $note
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(note $note)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.

@@ -13,7 +13,7 @@ class StorenoteRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,10 @@ class StorenoteRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => 'string|required',
+            'content' => 'string|nullable',
+            'background' => 'integer|nullable',
+            'is_background_image' => 'boolean|nullable'
         ];
     }
 }

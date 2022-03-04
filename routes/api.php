@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\NoteController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -24,4 +25,8 @@ Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/user', [UserController::class, 'getCurrentUser'])->name('user.get_current');
     Route::get('/logout', [AuthController::class, 'logout']);
+
+    Route::prefix('notes')->group(function(){
+        Route::post('create', [NoteController::class, 'store'])->name('wip.note.create');
+    });
 });
