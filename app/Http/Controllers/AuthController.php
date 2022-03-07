@@ -6,6 +6,7 @@ use App\Http\Requests\AuthLoginRequest;
 use App\Http\Requests\AuthRegisterRequest;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -14,9 +15,9 @@ class AuthController extends Controller
     /**
      * register a user
      * @param AuthRegisterRequest $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function register( AuthRegisterRequest $request): \Illuminate\Http\JsonResponse
+    public function register( AuthRegisterRequest $request): JsonResponse
     {
         try{
             $data = $request->only('name', 'email', 'password');
@@ -38,9 +39,9 @@ class AuthController extends Controller
     /**
      * login into user
      * @param AuthLoginRequest $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function login(AuthLoginRequest $request): \Illuminate\Http\JsonResponse
+    public function login(AuthLoginRequest $request): JsonResponse
     {
         $data = $request->only('email', 'password');
         $user = User::where('email', $data['email'])->first();
@@ -56,14 +57,14 @@ class AuthController extends Controller
             'user' => $user,
             'token' => $token
         ];
-        return response()->json($response, 200);
+        return response()->json($response);
     }
 
     /**
      * logout from user
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function logout(): \Illuminate\Http\JsonResponse
+    public function logout(): JsonResponse
     {
         $user = Auth::user();
         $user->tokens()->delete();

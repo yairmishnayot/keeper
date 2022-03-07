@@ -13,7 +13,7 @@ class AuthTest extends TestCase
 {
     use DatabaseTransactions;
     /**
-     * testing that we can get the current logged user
+     * test that we can get the current logged user
      *
      * @return void
      */
@@ -88,6 +88,10 @@ class AuthTest extends TestCase
 
     }
 
+    /**
+     * test that we can logout a user
+     * @return void
+     */
     public function test_logout_user(){
         $this->getRandomUserAndLogin();
         $route = route('user.logout');

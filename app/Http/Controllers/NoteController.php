@@ -6,13 +6,15 @@ use App\Models\note;
 use App\Http\Requests\StorenoteRequest;
 use App\Http\Requests\UpdatenoteRequest;
 use App\Services\NoteService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 
 class NoteController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -22,10 +24,10 @@ class NoteController extends Controller
     /**
      * Store a newly created note.
      *
-     * @param  \App\Http\Requests\StorenoteRequest  $request
-     * @return \Illuminate\Http\JsonResponse
+     * @param StorenoteRequest $request
+     * @return JsonResponse
      */
-    public function store(StorenoteRequest $request): \Illuminate\Http\JsonResponse
+    public function store(StorenoteRequest $request): JsonResponse
     {
         try{
             $data = $request->only('title', 'content', 'background', 'is_background_image');
@@ -40,8 +42,8 @@ class NoteController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\note  $note
-     * @return \Illuminate\Http\Response
+     * @param note $note
+     * @return Response
      */
     public function show(note $note)
     {
@@ -52,9 +54,9 @@ class NoteController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdatenoteRequest  $request
-     * @param  \App\Models\note  $note
-     * @return \Illuminate\Http\Response
+     * @param UpdatenoteRequest $request
+     * @param note $note
+     * @return Response
      */
     public function update(UpdatenoteRequest $request, note $note)
     {
@@ -64,8 +66,8 @@ class NoteController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\note  $note
-     * @return \Illuminate\Http\Response
+     * @param note $note
+     * @return Response
      */
     public function destroy(note $note)
     {
