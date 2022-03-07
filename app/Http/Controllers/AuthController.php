@@ -43,21 +43,26 @@ class AuthController extends Controller
      */
     public function login(AuthLoginRequest $request): JsonResponse
     {
-        $data = $request->only('email', 'password');
-        $user = User::where('email', $data['email'])->first();
-        if(!$user || !Hash::check($data['password'], $user->password)){
-            return response()->json([
-             'message' => 'Wrong Credentials'
-            ], 401);
+        try {
+            $data = $request->only('email', 'password');
+            $user = User::where('email', $data['email'])->first();
+            if (!$user || !Hash::check($data['password'], $user->password)) {
+                return response()->json([
+                    'message' => 'Wrong Credentials'
+                ], 401);
+            }
+
+            $token = $user->createToken('keeperToken-' . $user->id . '-' . Carbon::now())->plainTextToken;
+
+            $response = [
+                'user' => $user,
+                'token' => $token
+            ];
+            return response()->json($response);
         }
-
-        $token = $user->createToken('keeperToken-' . $user->id . '-' .Carbon::now())->plainTextToken;
-
-        $response = [
-            'user' => $user,
-            'token' => $token
-        ];
-        return response()->json($response);
+        catch (\Exception $e){
+            return response()->json($e->getMessage(), 500);
+        }
     }
 
     /**
@@ -66,10 +71,14 @@ class AuthController extends Controller
      */
     public function logout(): JsonResponse
     {
-        $user = Auth::user();
-        $user->tokens()->delete();
-        return response()->json([
-            'message' => 'Logged out successfully'
-        ]);
+        try {
+            $user = Auth::user();
+            $user->tokens()->delete();
+            return response()->json([
+                'message' => 'Logged out successfully'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 500);
+        }
     }
 }
