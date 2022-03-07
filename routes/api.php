@@ -24,7 +24,7 @@ Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
 //Protected Routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/user', [UserController::class, 'getCurrentUser'])->name('user.get_current');
-    Route::get('/logout', [AuthController::class, 'logout']);
+    Route::get('/logout', [AuthController::class, 'logout'])->name('user.logout');
 
     Route::prefix('notes')->group(function(){
         Route::post('create', [NoteController::class, 'store'])->name('wip.note.create');

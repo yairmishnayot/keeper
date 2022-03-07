@@ -88,6 +88,16 @@ class AuthTest extends TestCase
 
     }
 
+    public function test_logout_user(){
+        $this->getRandomUserAndLogin();
+        $route = route('user.logout');
+        $response = $this->get($route);
+        $response->assertJson([
+           'message' => 'Logged out successfully'
+        ]);
+        $response->assertStatus(200);
+    }
+
     /**
      * get random user from DB
      * @return mixed
