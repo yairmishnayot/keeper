@@ -6,6 +6,7 @@ use App\Http\Requests\AuthLoginRequest;
 use App\Http\Requests\AuthRegisterRequest;
 use App\Models\User;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -31,7 +32,7 @@ class AuthController extends Controller
             ];
             return response()->json($response, 201);
         }
-        catch (\Exception $e){
+        catch (Exception $e){
             return response()->json($e->getMessage(), 500);
         }
     }
@@ -60,7 +61,7 @@ class AuthController extends Controller
             ];
             return response()->json($response);
         }
-        catch (\Exception $e){
+        catch (Exception $e){
             return response()->json($e->getMessage(), 500);
         }
     }
@@ -77,7 +78,7 @@ class AuthController extends Controller
             return response()->json([
                 'message' => 'Logged out successfully'
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return response()->json($e->getMessage(), 500);
         }
     }
