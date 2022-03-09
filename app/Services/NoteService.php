@@ -4,10 +4,34 @@ namespace App\Services;
 
 use App\Models\Note;
 use App\Models\UsersNotes;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 
 class NoteService
 {
+
+    private int $user_id;
+
+    /**
+     * @param $user_id
+     */
+    public function __construct($user_id = null)
+    {
+        $this->user_id = $user_id;
+    }
+
+    /**
+     * Get all current user notes
+     * @return Collection
+     */
+    public function getCurrentUserNotes(): Collection
+    {
+        return Note::join('users_note', 'note_id', '=', 'notes.id')
+            ->where('users_note.user_id', '=', $this->user_id)
+            ->select('notes.id','title', 'content', 'background', 'is_background_image', 'users_note.role')
+            ->get();
+    }
+
     /**
      * create new note in db
      * @param $note_date

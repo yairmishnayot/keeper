@@ -8,17 +8,36 @@ use App\Http\Requests\UpdatenoteRequest;
 use App\Services\NoteService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class NoteController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return Response
+     * @var NoteService
      */
-    public function index()
+    private NoteService $note_service;
+
+    public function __construct()
     {
-        //
+        $this->middleware(function($request, $next){
+            $this->note_service = new NoteService(Auth::id());
+            return $next($request);
+        });
+    }
+
+    /**
+     * * Get all current user notes
+     * @return JsonResponse
+     */
+    public function index(): JsonResponse
+    {
+        try {
+            $notes = $this->note_service->getCurrentUserNotes();
+            return response()->json($notes);
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 500);
+
+        }
     }
 
     /**
