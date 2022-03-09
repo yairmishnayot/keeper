@@ -27,7 +27,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('user.logout');
 
     Route::prefix('notes')->group(function(){
-        Route::get('/', [NoteController::class, 'index']);
+        Route::get('/', [NoteController::class, 'index'])->name('notes.index');
         Route::post('create', [NoteController::class, 'store'])->name('wip.note.create');
     });
 });

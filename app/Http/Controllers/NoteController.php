@@ -33,7 +33,11 @@ class NoteController extends Controller
     {
         try {
             $notes = $this->note_service->getCurrentUserNotes();
-            return response()->json($notes);
+            $response = [
+                'data' => $notes,
+                'message' => "User's notes were retrieved successfully"
+            ];
+            return response()->json($response);
         } catch (\Exception $e) {
             return response()->json($e->getMessage(), 500);
 
