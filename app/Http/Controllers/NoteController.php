@@ -55,7 +55,7 @@ class NoteController extends Controller
         try{
             $data = $request->only('title', 'content', 'background', 'is_background_image');
             $note = NoteService::createNote($data);
-            return response()->json($note);
+            return response()->json($note, 201);
         }
         catch (\Exception $e){
             return response()->json($e->getMessage(), 500);
