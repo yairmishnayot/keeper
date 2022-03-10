@@ -18,7 +18,7 @@ class NotesTest extends KeeperTestCase
             "content" => "this is some test content"
         ];
 
-        $route = route('note.create');
+        $route = route('notes.create');
         $response = $this->post($route, $data);
 
         $response->assertJsonStructure([

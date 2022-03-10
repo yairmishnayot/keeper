@@ -28,7 +28,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::prefix('notes')->group(function(){
         Route::get('/', [NoteController::class, 'index'])->name('notes.index');
-        Route::post('create', [NoteController::class, 'store'])->name('note.create');
-        Route::get('/{id}', [NoteController::class, 'show']);
+        Route::post('create', [NoteController::class, 'store'])->name('notes.create');
+        Route::get('/{id}', [NoteController::class, 'show'])->name('wip.notes.show');
     });
 });
