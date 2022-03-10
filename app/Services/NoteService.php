@@ -10,26 +10,13 @@ use Illuminate\Support\Facades\Auth;
 class NoteService
 {
 
-    private int $user_id;
-
-    /**
-     * @param $user_id
-     */
-    public function __construct($user_id = null)
-    {
-        $this->user_id = $user_id;
-    }
-
     /**
      * Get all current user notes
      * @return Collection
      */
     public function getCurrentUserNotes(): Collection
     {
-        return Note::join('users_note', 'note_id', '=', 'notes.id')
-            ->where('users_note.user_id', '=', $this->user_id)
-            ->select('notes.id','title', 'content', 'background', 'is_background_image', 'users_note.role')
-            ->get();
+        return Auth::user()->notes;
     }
 
     /**
@@ -59,14 +46,6 @@ class NoteService
      */
     public function getNote($note_id): Note|null
     {
-        $note = Note::where('notes.id', $note_id)
-            ->join('users_note', 'note_id', '=', 'notes.id')
-            ->where('users_note.user_id', Auth::id())
-            ->select('notes.id', 'title', 'content', 'background', 'is_background_image', 'users_note.role')
-            ->first();
-        if(!$note){
-            throw new \Exception("We did not find the resource you were looking for", '404');
-        }
-        return $note;
+        return Auth::user()->notes->find($note_id);
     }
 }

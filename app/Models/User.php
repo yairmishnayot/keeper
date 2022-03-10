@@ -73,4 +73,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function notes(){
+        return $this->belongsToMany(Note::class, 'users_note')->withPivot('role');
+    }
 }

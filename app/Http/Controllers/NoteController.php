@@ -19,8 +19,8 @@ class NoteController extends Controller
 
     public function __construct()
     {
-        $this->middleware(function($request, $next){
-            $this->note_service = new NoteService(Auth::id());
+        $this->middleware(function ($request, $next) {
+            $this->note_service = new NoteService();
             return $next($request);
         });
     }
@@ -52,32 +52,39 @@ class NoteController extends Controller
      */
     public function store(StorenoteRequest $request): JsonResponse
     {
-        try{
+        try {
             $data = $request->only('title', 'content', 'background', 'is_background_image');
             $note = NoteService::createNote($data);
             return response()->json($note, 201);
-        }
-        catch (\Exception $e){
+        } catch (\Exception $e) {
             return response()->json($e->getMessage(), 500);
         }
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param note $note
+     * return a single note
+     * @param $id
      * @return JsonResponse
      */
-    public function show($id)
+    public function show($id): JsonResponse
     {
         try {
             $note = $this->note_service->getNote($id);
-            $response = [
-                "data" => $note,
-                "message" => 'Fetched note successfully',
-            ];
+            if ($note) {
+                $response = [
+                    "data" => $note,
+                    "message" => 'Fetched note successfully',
+                ];
+                $status = 200;
+            } else {
+                $response = [
+                    "data" => null,
+                    "message" => 'We could not find the note you were looking for'
+                ];
+                $status = 404;
+            }
 
-            return response()->json($response);
+            return response()->json($response, $status);
 
         } catch (\Exception $e) {
             return response()->json($e->getMessage(), 500);
