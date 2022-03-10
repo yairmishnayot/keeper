@@ -49,4 +49,24 @@ class NoteService
         }
         return $note;
     }
+
+
+    /**
+     * get user's note by it's id
+     * @param $note_id
+     * @return Note|null
+     * @throws \Exception
+     */
+    public function getNote($note_id): Note|null
+    {
+        $note = Note::where('notes.id', $note_id)
+            ->join('users_note', 'note_id', '=', 'notes.id')
+            ->where('users_note.user_id', Auth::id())
+            ->select('notes.id', 'title', 'content', 'background', 'is_background_image', 'users_note.role')
+            ->first();
+        if(!$note){
+            throw new \Exception("We did not find the resource you were looking for", '404');
+        }
+        return $note;
+    }
 }

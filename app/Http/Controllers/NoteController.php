@@ -66,11 +66,23 @@ class NoteController extends Controller
      * Display the specified resource.
      *
      * @param note $note
-     * @return Response
+     * @return JsonResponse
      */
-    public function show(note $note)
+    public function show($id)
     {
-        //
+        try {
+            $note = $this->note_service->getNote($id);
+            $response = [
+                "data" => $note,
+                "message" => 'Fetched note successfully',
+            ];
+
+            return response()->json($response);
+
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 500);
+        }
+
     }
 
 
