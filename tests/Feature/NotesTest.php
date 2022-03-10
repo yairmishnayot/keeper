@@ -13,6 +13,24 @@ class NotesTest extends TestCase
 {
     use DatabaseTransactions;
 
+    public function test_create_note(){
+        $this->getRandomUserAndLogin();
+
+        //prepare the data
+        $data = [
+            "title" => "this is some test title",
+            "content" => "this is some test content"
+        ];
+
+        $route = route('note.create');
+        $response = $this->post($route, $data);
+
+        $response->assertJsonStructure([
+            'id', 'title', 'content'
+        ]);
+
+        $response->assertStatus(201);
+    }
     public function test_get_logged_user_notes(){
         $this->getRandomUserAndLogin();
         $route = route('notes.index');
