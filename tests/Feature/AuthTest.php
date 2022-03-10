@@ -4,12 +4,10 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use Tests\TestCase;
+use Tests\KeeperTestCase;
 
-class AuthTest extends TestCase
+class AuthTest extends KeeperTestCase
 {
     use DatabaseTransactions;
     /**
@@ -100,23 +98,5 @@ class AuthTest extends TestCase
            'message' => 'Logged out successfully'
         ]);
         $response->assertStatus(200);
-    }
-
-    /**
-     * get random user from DB
-     * @return mixed
-     */
-    private function getRandomUser(){
-        return User::inRandomOrder()->first();
-    }
-
-    /**
-     * get a random user and then login into that user
-     * @return mixed
-     */
-    private function getRandomUserAndLogin(){
-        $user = $this->getRandomUser();
-        Auth::login($user);
-        return $user;
     }
 }

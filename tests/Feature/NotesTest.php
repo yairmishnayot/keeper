@@ -2,14 +2,10 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Support\Facades\Auth;
-use Tests\TestCase;
+use Tests\KeeperTestCase;
 
-class NotesTest extends TestCase
+class NotesTest extends KeeperTestCase
 {
     use DatabaseTransactions;
 
@@ -50,25 +46,5 @@ class NotesTest extends TestCase
             'message'
         ]);
         $response->assertStatus(200);
-    }
-
-
-    /**
-     * get random user from DB
-     * @return mixed
-     */
-    private function getRandomUser(){
-        return User::inRandomOrder()->first();
-    }
-
-    /**
-     * get a random user and then login into that user
-     * @return User|null
-     */
-    private function getRandomUserAndLogin(): User | null
-    {
-        $user = $this->getRandomUser();
-        Auth::login($user);
-        return $user;
     }
 }
