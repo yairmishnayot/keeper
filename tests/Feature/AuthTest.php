@@ -3,13 +3,11 @@
 namespace Tests\Feature;
 
 use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Support\Str;
 use Tests\KeeperTestCase;
 
 class AuthTest extends KeeperTestCase
 {
-    use DatabaseTransactions;
     /**
      * test that we can get the current logged user
      *
