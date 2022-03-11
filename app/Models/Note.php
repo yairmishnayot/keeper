@@ -33,4 +33,6 @@ class Note extends Model
     use HasFactory;
 
     protected $fillable = ['title', 'content', 'background', 'is_background_image'];
+
+    protected $hidden = ['created_at', 'updated_at'];
 }
