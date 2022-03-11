@@ -102,7 +102,7 @@ class NoteController extends Controller
      */
     public function update(UpdatenoteRequest $request, note $note)
     {
-        //
+
     }
 
     /**
