@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Support\Str;
 use Tests\KeeperTestCase;
 
 class NotesTest extends KeeperTestCase
@@ -83,5 +84,27 @@ class NotesTest extends KeeperTestCase
             'message'
         ]);
         $response->assertStatus(200);
+    }
+
+    /**
+     * Test that user can update a note with edit permissions
+     * @return void
+     */
+    public function test_edit_note(): void
+    {
+        //get user and one of his notes
+        $user_with_note = $this->getRandomUserWithNotes();
+        $note = $user_with_note->notes()->first();
+
+        //log into the user
+        $this->loginUser($user_with_note);
+        $route = route('notes.update', $note->id);
+        $note->name = Str::random();
+        $response = $this->post($route, $note->toArray());
+
+        $response->assertJson([
+            'message' => 'note updated successfully'
+        ]);
+
     }
 }
