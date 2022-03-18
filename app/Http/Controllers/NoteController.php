@@ -95,14 +95,26 @@ class NoteController extends Controller
 
     /**
      * Update the specified resource in storage.
-     *
      * @param UpdatenoteRequest $request
-     * @param note $note
-     * @return Response
+     * @param $note_id
+     * @return JsonResponse
      */
-    public function update(UpdatenoteRequest $request, note $note)
+    public function update(UpdatenoteRequest $request, $note_id): JsonResponse
     {
-
+        try {
+            $data = $request->only('title', 'content', 'background', 'is_background_image');
+            if($this->note_service->updateNote($note_id, $data)){
+                $response = [
+                    "message" => "note updated successfully"
+                ];
+                return response()->json($response);
+            }
+            else{
+                throw new \Exception("Some error occurred during the update process. We could not update the note");
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 500);
+        }
     }
 
     /**

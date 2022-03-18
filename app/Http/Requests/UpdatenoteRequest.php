@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Services\NoteService;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UpdatenoteRequest extends FormRequest
 {
@@ -13,7 +15,8 @@ class UpdatenoteRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        $note_id = $this->route()->parameters['id'];
+        return NoteService::canUserEditNote(Auth::id(), $note_id);
     }
 
     /**

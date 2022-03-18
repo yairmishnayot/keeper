@@ -48,4 +48,26 @@ class NoteService
     {
         return Auth::user()->notes->find($note_id);
     }
+
+    /**
+     * Check if user can edit note
+     * @param $user_id
+     * @param $note_id
+     * @return bool
+     */
+    public static function canUserEditNote($user_id, $note_id): bool
+    {
+        $note = UsersNotes::where([
+            'user_id' => $user_id,
+            'note_id' => $note_id,
+            'role' => UsersNotes::ROLES["EDIT"]
+        ])->first();
+        return $note !== null;
+    }
+
+
+    public function updateNote($note_id, $data)
+    {
+        return Note::find($note_id)->update($data);
+    }
 }
