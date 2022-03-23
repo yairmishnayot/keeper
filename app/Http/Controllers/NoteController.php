@@ -8,7 +8,6 @@ use App\Http\Requests\UpdatenoteRequest;
 use App\Services\NoteService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
 
 class NoteController extends Controller
 {
@@ -17,12 +16,9 @@ class NoteController extends Controller
      */
     private NoteService $note_service;
 
-    public function __construct()
+    public function __construct(NoteService $note_service)
     {
-        $this->middleware(function ($request, $next) {
-            $this->note_service = new NoteService();
-            return $next($request);
-        });
+        $this->note_service = $note_service;
     }
 
     /**
