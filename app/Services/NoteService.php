@@ -65,8 +65,13 @@ class NoteService
         return $note !== null;
     }
 
-
-    public function updateNote($note_id, $data)
+    /**
+     * update note with updated note data
+     * @param $note_id
+     * @param $data
+     * @return bool
+     */
+    public function updateNote($note_id, $data): bool
     {
         return Note::find($note_id)->update($data);
     }
