@@ -36,10 +36,10 @@ class NotesTest extends KeeperTestCase
      * @return void
      */
     public function test_get_logged_user_notes(){
-        $this->getRandomUserAndLogin();
+        $user = $this->getRandomUserWithNotes();
+        $this->loginUser($user);
         $route = route('notes.index');
         $response = $this->get($route);
-
         $response->assertJsonStructure([
             'data' => [
                 '*'=>[
@@ -48,7 +48,7 @@ class NotesTest extends KeeperTestCase
                     'content',
                     'background',
                     'is_background_image',
-                    'role'
+                    'pivot'
                 ]
             ],
             'message'
