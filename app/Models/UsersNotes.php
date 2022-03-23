@@ -27,7 +27,8 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 class UsersNotes extends Pivot
 {
     public const ROLES = [
-      "READ" => 1,
-      "EDIT" => 2
+        "READ" => 1,
+        "EDIT" => 2,
+        "OWNER" => 3
     ];
 }

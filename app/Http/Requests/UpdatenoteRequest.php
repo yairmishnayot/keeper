@@ -13,10 +13,9 @@ class UpdatenoteRequest extends FormRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        $note_id = $this->route()->parameters['id'];
-        return NoteService::canUserEditNote(Auth::id(), $note_id);
+        return true;
     }
 
     /**

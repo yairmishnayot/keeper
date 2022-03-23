@@ -8,6 +8,7 @@ use App\Http\Requests\UpdatenoteRequest;
 use App\Services\NoteService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class NoteController extends Controller
 {
@@ -98,6 +99,12 @@ class NoteController extends Controller
     public function update(UpdatenoteRequest $request, $note_id): JsonResponse
     {
         try {
+            if(!$this->note_service->canUserEditNote(Auth::id(), $note_id)){
+                $response = [
+                    "message" => "You are not authorized to edit this note"
+                ];
+                return response()->json($response, '403');
+            }
             $data = $request->only('title', 'content', 'background', 'is_background_image');
             if($this->note_service->updateNote($note_id, $data)){
                 $response = [

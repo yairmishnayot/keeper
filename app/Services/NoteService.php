@@ -31,7 +31,7 @@ class NoteService
             UsersNotes::create([
                 'user_id' => $user_id,
                 'note_id' => $note->id,
-                'role' => 2
+                'role' => UsersNotes::ROLES["OWNER"]
             ]);
         }
         return $note;
@@ -55,13 +55,15 @@ class NoteService
      * @param $note_id
      * @return bool
      */
-    public static function canUserEditNote($user_id, $note_id): bool
+    public function canUserEditNote($user_id, $note_id): bool
     {
+        $minimum_role_for_edit = UsersNotes::ROLES["EDIT"];
         $note = UsersNotes::where([
             'user_id' => $user_id,
             'note_id' => $note_id,
-            'role' => UsersNotes::ROLES["EDIT"]
-        ])->first();
+        ])
+            ->where('role', '>=', $minimum_role_for_edit)
+            ->first();
         return $note !== null;
     }
 
