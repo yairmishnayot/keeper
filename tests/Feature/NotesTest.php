@@ -11,6 +11,7 @@ class NotesTest extends KeeperTestCase
     /**
      * test that user can create note
      * @return void
+     * @throws \Exception
      */
     public function test_create_note(){
         $this->getRandomUserAndLogin();
@@ -104,6 +105,29 @@ class NotesTest extends KeeperTestCase
 
         $response->assertJson([
             'message' => 'note updated successfully'
+        ]);
+
+    }
+
+    /**
+     * test that user can delete its own note
+     * @return void
+     */
+    public function test_delete_note(): void
+    {
+        //get user and one of his notes
+        //get user and one of his notes
+        $user_with_note = $this->getRandomUserWithNotes();
+        $note = $user_with_note->notes()->first();
+
+        //log into the user
+        $this->loginUser($user_with_note);
+
+        //delete the note
+        $route = route('notes.delete', $note->id);
+        $response = $this->delete($route);
+        $response->assertJson([
+           'message' =>  'Note deleted successfully'
         ]);
 
     }
