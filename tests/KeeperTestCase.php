@@ -13,10 +13,15 @@ class KeeperTestCase extends TestCase
     /**
      * get random user from DB
      * @return User
+     * @throws \Exception
      */
     protected function getRandomUser(): User
     {
-        return User::inRandomOrder()->first();
+        $user = User::inRandomOrder()->first();
+        if(!isset($user)){
+            throw new \Exception("You don't have any users in your database");
+        }
+        return $user;
     }
 
     /**
@@ -27,9 +32,6 @@ class KeeperTestCase extends TestCase
     protected function getRandomUserAndLogin(): object
     {
         $user = $this->getRandomUser();
-        if(!isset($user)){
-            throw new \Exception("You don't have any users in your database");
-        }
         Auth::login($user);
         return $user;
     }
