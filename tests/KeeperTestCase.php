@@ -9,20 +9,27 @@ use Illuminate\Support\Facades\Auth;
 class KeeperTestCase extends TestCase
 {
     use DatabaseTransactions;
+
     /**
      * get random user from DB
-     * @return mixed
+     * @return User
      */
-    protected function getRandomUser(){
+    protected function getRandomUser(): User
+    {
         return User::inRandomOrder()->first();
     }
 
     /**
      * get a random user and then login into that user
-     * @return mixed
+     * @return object
+     * @throws \Exception
      */
-    protected function getRandomUserAndLogin(){
+    protected function getRandomUserAndLogin(): object
+    {
         $user = $this->getRandomUser();
+        if(!isset($user)){
+            throw new \Exception("You don't have any users in your database");
+        }
         Auth::login($user);
         return $user;
     }
