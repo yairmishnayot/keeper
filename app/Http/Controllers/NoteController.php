@@ -121,13 +121,27 @@ class NoteController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param note $note
-     * @return Response
+     * delete user note
+     * @param int $note_id
+     * @return JsonResponse
      */
-    public function destroy(note $note)
+    public function destroy(int $note_id): JsonResponse
     {
-        //
+        try {
+            if(!$this->note_service->canUserDeleteNote(Auth::id(), $note_id)){
+                $response = [
+                    "message" => "You are not authorized to delete this note"
+                ];
+                return response()->json($response, '403');
+            }
+
+            $this->note_service->deleteNote($note_id);
+            $response = [
+                "message" => "Note deleted successfully"
+            ];
+            return response()->json($response);
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 500);
+        }
     }
 }

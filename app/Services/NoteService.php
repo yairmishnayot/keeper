@@ -68,6 +68,22 @@ class NoteService
     }
 
     /**
+     * Check if user can delete note
+     * @param $user_id
+     * @param $note_id
+     * @return bool
+     */
+    public function canUserDeleteNote($user_id, $note_id): bool
+    {
+        $note = UsersNotes::where([
+            'user_id' => $user_id,
+            'note_id' => $note_id,
+            'role' => UsersNotes::ROLES["OWNER"]
+        ])->first();
+        return $note !== null;
+    }
+
+    /**
      * update note with updated note data
      * @param $note_id
      * @param $data
@@ -76,5 +92,15 @@ class NoteService
     public function updateNote($note_id, $data): bool
     {
         return Note::find($note_id)->update($data);
+    }
+
+    /**
+     * delete a note
+     * @param $note_id
+     * @return bool|null
+     */
+    public function deleteNote($note_id): ?bool
+    {
+        return Note::find($note_id)->delete();
     }
 }
